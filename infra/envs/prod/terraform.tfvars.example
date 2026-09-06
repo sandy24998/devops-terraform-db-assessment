@@ -1,0 +1,41 @@
+aws_region = "ap-south-1"
+
+project_name = "hotel-bookings"
+
+environment = "prod"
+
+vpc_cidr = "10.20.0.0/16"
+
+availability_zones = [
+  "ap-south-1a",
+  "ap-south-1b"
+]
+
+public_subnet_cidrs = [
+  "10.20.1.0/24",
+  "10.20.2.0/24"
+]
+
+private_subnet_cidrs = [
+  "10.20.11.0/24",
+  "10.20.12.0/24"
+]
+
+enable_nat_gateway = true
+
+container_image = "nginx:latest"
+container_port  = 80
+
+task_cpu    = 512
+task_memory = 1024
+
+desired_count = 2
+
+db_name     = "hotel_bookings"
+db_username = "replace-with-prod-db-username"
+db_password = "replace-with-prod-db-password"
+
+db_instance_class          = "db.t3.small"
+db_allocated_storage       = 50
+db_backup_retention_period = 14
+db_deletion_protection     = true

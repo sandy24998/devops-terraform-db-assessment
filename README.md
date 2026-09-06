@@ -20,12 +20,42 @@ Internet → ALB → ECS/Fargate → RDS PostgreSQL
 - [x] Phase 1 — Local PostgreSQL database
 - [x] Phase 2 — Seed data and query optimization
 - [x] Phase 3 — Backup and restore
-- [ ] Phase 4 — Terraform network module
-- [ ] Phase 5 — Terraform RDS module
-- [ ] Phase 6 — Terraform ECS module
-- [ ] Phase 7 — Dev and prod environments
+- [x] Phase 4 — Terraform network module
+- [x] Phase 5 — Terraform RDS module
+- [x] Phase 6 — Terraform ECS module
+- [x] Phase 7 — Dev and prod environments
 - [ ] Phase 8 — Terraform validation and GitHub Actions
 - [ ] Phase 9 — Final documentation and verification
+
+## Terraform Infrastructure
+
+Terraform is organized into reusable modules for the VPC/network, ECS/Fargate
+application load balancer, and private PostgreSQL RDS database. The `dev` and
+`prod` environments compose these modules with environment-specific sizing and
+CIDR ranges.
+
+Create a local variables file from the relevant example and replace the
+placeholder database credentials. The real `terraform.tfvars` files are
+ignored by Git.
+
+```bash
+cp infra/envs/dev/terraform.tfvars.example infra/envs/dev/terraform.tfvars
+cp infra/envs/prod/terraform.tfvars.example infra/envs/prod/terraform.tfvars
+```
+
+Review and apply an environment:
+
+```bash
+cd infra/envs/dev
+terraform init
+terraform fmt -recursive
+terraform validate
+terraform plan
+terraform apply
+```
+
+Use the same commands from `infra/envs/prod` for the production environment.
+The RDS endpoint is exposed as the `rds_endpoint` output after deployment.
 
 ## Local Database Setup
 
