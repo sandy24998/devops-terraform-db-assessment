@@ -38,3 +38,28 @@ variable "enable_nat_gateway" {
   type        = bool
   default     = true
 }
+
+variable "container_image" {
+  description = "Container image for the ECS application"
+  type        = string
+}
+
+variable "container_port" {
+  description = "Application container port"
+  type        = number
+}
+
+variable "task_cpu" {
+  description = "Fargate task CPU units"
+  type        = number
+}
+
+variable "task_memory" {
+  description = "Fargate task memory in MB"
+  type        = number
+}
+
+variable "desired_count" {
+  description = "Number of ECS tasks"
+  type        = number
+}
