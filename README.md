@@ -24,8 +24,8 @@ Internet → ALB → ECS/Fargate → RDS PostgreSQL
 - [x] Phase 5 — Terraform RDS module
 - [x] Phase 6 — Terraform ECS module
 - [x] Phase 7 — Dev and prod environments
-- [ ] Phase 8 — Terraform validation and GitHub Actions
-- [ ] Phase 9 — Final documentation and verification
+- [x] Phase 8 — Terraform validation and GitHub Actions
+- [x] Phase 9 — Final documentation and verification
 
 ## Terraform Infrastructure
 
@@ -56,6 +56,10 @@ terraform apply
 
 Use the same commands from `infra/envs/prod` for the production environment.
 The RDS endpoint is exposed as the `rds_endpoint` output after deployment.
+
+GitHub Actions runs `terraform fmt`, `terraform init`, `terraform validate`,
+and a refresh-free plan for both environments. Configure the repository secrets
+`TF_DB_USERNAME` and `TF_DB_PASSWORD` before enabling the workflow.
 
 ## Local Database Setup
 
