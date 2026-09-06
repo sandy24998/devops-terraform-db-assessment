@@ -58,8 +58,17 @@ Use the same commands from `infra/envs/prod` for the production environment.
 The RDS endpoint is exposed as the `rds_endpoint` output after deployment.
 
 GitHub Actions runs `terraform fmt`, `terraform init`, `terraform validate`,
-and a refresh-free plan for both environments. Configure the repository secrets
-`TF_DB_USERNAME` and `TF_DB_PASSWORD` before enabling the workflow.
+and a refresh-free plan for both environments. Configure these repository
+secrets before enabling the workflow:
+
+- `AWS_ROLE_TO_ASSUME` — an AWS IAM role ARN trusted by this GitHub repository
+  for GitHub OIDC authentication
+- `TF_DB_USERNAME` — optional database username override for the plan
+- `TF_DB_PASSWORD` — optional database password override for the plan
+
+The IAM role should grant the permissions needed to read the Terraform plan
+inputs, and its trust policy should restrict access to this repository and the
+`main` branch.
 
 ## Local Database Setup
 
