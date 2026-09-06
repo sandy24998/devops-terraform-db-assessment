@@ -22,6 +22,7 @@ backups/
 
 # Docker
 postgres_data/
+secrets/
 
 # OS / Editor
 .DS_Store

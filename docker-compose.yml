@@ -1,1 +1,25 @@
-services: {}
+services:
+  postgres:
+    image: postgres:16
+    container_name: hotel-bookings-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: hotel_bookings
+      POSTGRES_USER_FILE: /run/secrets/db_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    secrets:
+      - db_user
+      - db_password
+
+volumes:
+  postgres_data:
+
+secrets:
+  db_user:
+    file: ./secrets/db_user.txt
+  db_password:
+    file: ./secrets/db_password.txt
