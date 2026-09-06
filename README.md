@@ -65,8 +65,8 @@ ignored by Git.
 
 ```bash
 mkdir -p secrets
-printf '%s\n' 'hotel_user' > secrets/db_user.txt
-printf '%s\n' 'change-this-password' > secrets/db_password.txt
+printf '%s\n' 'DB_USER_NAME' > secrets/db_user.txt
+printf '%s\n' 'DB_PASSWORD' > secrets/db_password.txt
 chmod 600 secrets/db_user.txt secrets/db_password.txt
 ```
 
