@@ -43,13 +43,32 @@ cp infra/envs/dev/terraform.tfvars.example infra/envs/dev/terraform.tfvars
 cp infra/envs/prod/terraform.tfvars.example infra/envs/prod/terraform.tfvars
 ```
 
-Review and apply an environment:
+Review the dev environment without contacting AWS:
 
 ```bash
 cd infra/envs/dev
 terraform init
 terraform fmt -recursive
 terraform validate
+terraform plan -refresh=false -var-file=terraform.tfvars.example
+cd ../../..
+```
+
+Run the same verification for production:
+
+```bash
+cd infra/envs/prod
+terraform init
+terraform fmt -recursive
+terraform validate
+terraform plan -refresh=false -var-file=terraform.tfvars.example
+cd ../../..
+```
+
+To deploy an environment, configure AWS credentials and run:
+
+```bash
+cd infra/envs/dev
 terraform plan
 terraform apply
 ```
@@ -69,6 +88,7 @@ for any real `terraform apply`.
 
 ```bash
 docker compose up -d
+docker compose ps
 ```
 
 ### Apply migrations and seed data
@@ -97,11 +117,15 @@ docker compose exec postgres \
 docker compose exec postgres \
   psql -U "$(cat secrets/db_user.txt)" -d hotel_bookings \
   -c "SELECT COUNT(*) AS events FROM booking_events;"
+
+docker compose exec postgres \
+  psql -U "$(cat secrets/db_user.txt)" -d hotel_bookings \
+  -c "SELECT indexname FROM pg_indexes WHERE indexname = 'idx_hotel_bookings_city_created_at';"
 ```
 
-The seed creates 200 hotel bookings and 50 booking events. The
-`idx_hotel_bookings_city_created_at` index supports filtering and sorting by
-city and creation time.
+The verification should report 200 bookings, 50 events, and the
+`idx_hotel_bookings_city_created_at` index. This index supports filtering and
+sorting by city and creation time.
 
 ## Backup and Restore
 
@@ -116,3 +140,5 @@ Restore a backup file:
 ```bash
 ./scripts/restore.sh backups/hotel_bookings_YYYYMMDD_HHMMSS.sql
 ```
+
+Verify the restore by rerunning the booking and event count queries above.
