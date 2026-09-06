@@ -58,6 +58,18 @@ The pull request workflow runs the same Terraform checks for both environments.
 It also uploads the plans as `terraform-plan-dev` and `terraform-plan-prod`
 artifacts. AWS credentials are only needed to run `terraform apply`.
 
+## Local Database Secrets
+
+Create the files used by Docker Compose. Use your own values; these files are
+ignored by Git.
+
+```bash
+mkdir -p secrets
+printf '%s\n' 'hotel_user' > secrets/db_user.txt
+printf '%s\n' 'change-this-password' > secrets/db_password.txt
+chmod 600 secrets/db_user.txt secrets/db_password.txt
+```
+
 ## Local Database Setup
 
 ### Start PostgreSQL
