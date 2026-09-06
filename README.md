@@ -1,38 +1,16 @@
-# DevOps Terraform + Database Reliability Assessment
+# DevOps Terraform and Database Assessment
 
-This project demonstrates:
-
-- AWS infrastructure design using Terraform
-- Environment-specific Terraform configuration
-- Local PostgreSQL database using Docker Compose
-- Database migrations and seed data
-- Query optimization using indexes
-- Database backup and restore
-- Terraform validation using GitHub Actions
+This project contains Terraform infrastructure for AWS and a local PostgreSQL
+database for hotel bookings.
 
 ## Architecture
 
 Internet → ALB → ECS/Fargate → RDS PostgreSQL
 
-## Project Status
-
-- [x] Phase 0 — Repository initialization
-- [x] Phase 1 — Local PostgreSQL database
-- [x] Phase 2 — Seed data and query optimization
-- [x] Phase 3 — Backup and restore
-- [x] Phase 4 — Terraform network module
-- [x] Phase 5 — Terraform RDS module
-- [x] Phase 6 — Terraform ECS module
-- [x] Phase 7 — Dev and prod environments
-- [x] Phase 8 — Terraform validation and GitHub Actions
-- [x] Phase 9 — Final documentation and verification
-
 ## Terraform Infrastructure
 
-Terraform is organized into reusable modules for the VPC/network, ECS/Fargate
-application load balancer, and private PostgreSQL RDS database. The `dev` and
-`prod` environments compose these modules with environment-specific sizing and
-CIDR ranges.
+The Terraform code has modules for the network, ECS/Fargate, and RDS. Both
+`dev` and `prod` environments use these modules.
 
 Create a local variables file from the relevant example and replace the
 placeholder database credentials. The real `terraform.tfvars` files are
@@ -43,7 +21,7 @@ cp infra/envs/dev/terraform.tfvars.example infra/envs/dev/terraform.tfvars
 cp infra/envs/prod/terraform.tfvars.example infra/envs/prod/terraform.tfvars
 ```
 
-Review the dev environment without contacting AWS:
+Check the dev environment:
 
 ```bash
 cd infra/envs/dev
@@ -54,7 +32,7 @@ terraform plan -refresh=false -var-file=terraform.tfvars.example
 cd ../../..
 ```
 
-Run the same verification for production:
+Check the prod environment:
 
 ```bash
 cd infra/envs/prod
@@ -76,12 +54,9 @@ terraform apply
 Use the same commands from `infra/envs/prod` for the production environment.
 The RDS endpoint is exposed as the `rds_endpoint` output after deployment.
 
-GitHub Actions runs `terraform fmt`, `terraform init`, `terraform validate`,
-and `terraform plan -refresh=false` for both environments without AWS
-credentials. The AWS provider skips credential, account, and metadata
-preflight checks for this offline review. Each workflow run uploads a readable
-`terraform-plan-dev` and `terraform-plan-prod` artifact containing the plan.
-AWS credentials are still required for any real `terraform apply`.
+The pull request workflow runs the same Terraform checks for both environments.
+It also uploads the plans as `terraform-plan-dev` and `terraform-plan-prod`
+artifacts. AWS credentials are only needed to run `terraform apply`.
 
 ## Local Database Setup
 
