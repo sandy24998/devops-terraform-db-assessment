@@ -79,8 +79,9 @@ The RDS endpoint is exposed as the `rds_endpoint` output after deployment.
 GitHub Actions runs `terraform fmt`, `terraform init`, `terraform validate`,
 and `terraform plan -refresh=false` for both environments without AWS
 credentials. The AWS provider skips credential, account, and metadata
-preflight checks for this offline review. AWS credentials are still required
-for any real `terraform apply`.
+preflight checks for this offline review. Each workflow run uploads a readable
+`terraform-plan-dev` and `terraform-plan-prod` artifact containing the plan.
+AWS credentials are still required for any real `terraform apply`.
 
 ## Local Database Setup
 
