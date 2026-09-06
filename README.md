@@ -18,6 +18,19 @@ Internet → ALB → ECS/Fargate → RDS PostgreSQL
 
 - [ ] Phase 0 — Repository initialization
 - [ ] Phase 1 — Local PostgreSQL database
+## Local Database Setup
+
+### Start PostgreSQL
+docker compose up -d
+
+docker compose exec -T postgres \
+  psql -U "$(cat secrets/db_user.txt)" -d hotel_bookings \
+  < db/migrations/001_create_tables.sql
+
+docker compose exec postgres \
+  psql -U "$(cat secrets/db_user.txt)" -d hotel_bookings \
+  -c "\dt"
+
 - [ ] Phase 2 — Seed data and query optimization
 - [ ] Phase 3 — Backup and restore
 - [ ] Phase 4 — Terraform network module
